@@ -13,15 +13,11 @@ import java.util.Map;
 import java.util.Set;
 import javax.imageio.ImageIO;
 
-/**
- * Keeps every profile picture that was already downloaded. A picture is requested from the server
- * the first time somebody needs to draw it; when it arrives all windows repaint.
- * Only used on the Swing thread, so no locking is needed.
- */
+
 public final class AvatarCache {
     private static AvatarCache instance;
 
-    /** Starts a cache for this connection (keeps the old one when it is the same connection). */
+    
     public static synchronized void attach(ClientConnection conn) {
         if (instance == null || instance.conn != conn) instance = new AvatarCache(conn);
     }
@@ -39,7 +35,7 @@ public final class AvatarCache {
         this.conn = conn;
     }
 
-    /** @return the picture, or null (and a request is sent once) when it is not here yet or does not exist. */
+    
     public BufferedImage image(long userId) {
         BufferedImage img = images.get(userId);
         if (img == null && !noPicture.contains(userId) && requested.add(userId)) {
