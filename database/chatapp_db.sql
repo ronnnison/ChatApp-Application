@@ -1,7 +1,3 @@
--- =====================================================================
---  ChatApp database  (XAMPP -> phpMyAdmin -> Import, or run in SQL tab)
---  Re-running this script RESETS the database (DROP TABLE below).
--- =====================================================================
 CREATE DATABASE IF NOT EXISTS chatapp_db
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE chatapp_db;
@@ -15,10 +11,7 @@ DROP TABLE IF EXISTS conversations;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ---------------------------------------------------------------------
--- users : accounts. Passwords are NEVER stored in plain text:
---         password_hash = PBKDF2-HMAC-SHA256(password, salt), Base64.
--- ---------------------------------------------------------------------
+
 CREATE TABLE users (
   id            BIGINT       NOT NULL AUTO_INCREMENT,
   username      VARCHAR(30)  NOT NULL,
@@ -34,11 +27,7 @@ CREATE TABLE users (
   UNIQUE KEY uq_users_email (email)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- conversations : one table for both private chats and groups.
---   PRIVATE -> exactly 2 members, name is NULL (shown as the other user)
---   GROUP   -> named, has an ADMIN who can add members
--- ---------------------------------------------------------------------
+
 CREATE TABLE conversations (
   id         BIGINT      NOT NULL AUTO_INCREMENT,
   type       ENUM('PRIVATE','GROUP') NOT NULL,
@@ -61,10 +50,7 @@ CREATE TABLE conversation_members (
   CONSTRAINT fk_cm_user FOREIGN KEY (user_id)         REFERENCES users(id)         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- files : metadata of shared .docx / image files.
---         The bytes live on the server disk in server_uploads/<stored_name>.
--- ---------------------------------------------------------------------
+
 CREATE TABLE files (
   id            BIGINT       NOT NULL AUTO_INCREMENT,
   uploader_id   BIGINT       NOT NULL,
@@ -78,9 +64,7 @@ CREATE TABLE files (
   CONSTRAINT fk_files_user FOREIGN KEY (uploader_id) REFERENCES users(id)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- messages : text messages and file messages (file_id set).
--- ---------------------------------------------------------------------
+
 CREATE TABLE messages (
   id              BIGINT    NOT NULL AUTO_INCREMENT,
   conversation_id BIGINT    NOT NULL,
@@ -96,10 +80,7 @@ CREATE TABLE messages (
   CONSTRAINT fk_msg_file   FOREIGN KEY (file_id)         REFERENCES files(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- login_logs : audit trail + used to block brute-force logins
---              (5 failed attempts in 5 minutes => temporary lock).
--- ---------------------------------------------------------------------
+
 CREATE TABLE login_logs (
   id                 BIGINT      NOT NULL AUTO_INCREMENT,
   user_id            BIGINT      NULL,
