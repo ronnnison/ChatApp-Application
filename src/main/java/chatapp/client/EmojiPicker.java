@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
-/** Popup with a grid of emoji grouped into categories. */
+
 public final class EmojiPicker {
     private EmojiPicker() { }
 
