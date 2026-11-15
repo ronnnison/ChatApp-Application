@@ -16,11 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import javax.swing.SwingUtilities;
 
-/**
- * Client side of the socket. A reader thread receives packets from the server and a writer
- * thread sends queued packets, so the Swing (GUI) thread never blocks on the network.
- * Listeners are always called on the Swing thread, so screens can update components directly.
- */
+
 public class ClientConnection {
     private final BlockingQueue<Packet> outbox = new LinkedBlockingQueue<>();
     private final List<Consumer<Packet>> listeners = new CopyOnWriteArrayList<>();
@@ -87,7 +83,7 @@ public class ClientConnection {
         writerThread.start();
     }
 
-    /** Accepts "host" or "host:port" (for tunnels and cloud servers that use another port). */
+    
     public void connectTo(String spec) throws IOException {
         String host = spec == null ? "" : spec.trim();
         int port = Protocol.PORT;
