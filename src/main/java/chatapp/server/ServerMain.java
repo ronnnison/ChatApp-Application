@@ -4,11 +4,7 @@ import chatapp.common.NetUtil;
 import chatapp.common.Protocol;
 import chatapp.db.DBConnection;
 
-/**
- * Headless server for hosting on a cloud machine / always-on PC (no window needed).
- * Usage:  java -cp "ChatApp-1.0.jar:mysql-connector-j-8.4.0.jar" chatapp.server.ServerMain [port]
- * (on Windows use ; instead of : between the jar files)
- */
+
 public final class ServerMain {
     private ServerMain() { }
 
