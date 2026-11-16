@@ -29,14 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * One thread per connected client (THREAD CREATION).
- *
- * The reader thread (this thread) handles incoming requests. A second "writer" thread takes
- * packets from a BlockingQueue and writes them to the socket (INTER-THREAD COMMUNICATION,
- * producer/consumer). When the client disconnects the writer is interrupted and exits
- * (THREAD INTERRUPTION HANDLING).
- */
+
 public class ClientHandler extends Thread {
     private static final int HISTORY_LIMIT = 200;
 
@@ -58,7 +51,7 @@ public class ClientHandler extends Thread {
 
     UserDTO getUser() { return user; }
 
-    /** Never blocks: just queues the packet for the writer thread. */
+   
     void send(Packet packet) {
         if (active) outbox.offer(packet);
     }
